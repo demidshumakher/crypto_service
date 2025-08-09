@@ -10,12 +10,19 @@ type CryptoRepository struct {
 	history map[string][]domain.PriceHistory
 }
 
-func (r *CryptoRepository) GetAll() []domain.Crypto {
+func NewCryptoRepository() *CryptoRepository {
+	return &CryptoRepository{
+		dp:      make(map[string]*domain.Crypto),
+		history: make(map[string][]domain.PriceHistory),
+	}
+}
+
+func (r *CryptoRepository) GetAll() ([]domain.Crypto, error) {
 	result := make([]domain.Crypto, len(r.dp))
 	for _, crypto := range r.dp {
 		result = append(result, *crypto)
 	}
-	return result
+	return result, nil
 }
 
 func (r *CryptoRepository) GetBySymbol(symbol string) (*domain.Crypto, error) {
@@ -47,7 +54,7 @@ func (r *CryptoRepository) Create(symbol, name string, price float64) (*domain.C
 	return newCrypto, nil
 }
 
-func (r *CryptoRepository) UpdatePrice(symbol string, price float64, updatedAt time.Time) (*domain.Crypto, error) {
+func (r *CryptoRepository) Update(symbol string, price float64, updatedAt time.Time) (*domain.Crypto, error) {
 	crypto, ok := r.dp[symbol]
 	if !ok {
 		return nil, domain.ErrNotFound
