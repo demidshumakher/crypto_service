@@ -37,7 +37,9 @@ func (s *Service) GetAll(ctx context.Context) ([]domain.Crypto, error) {
 	return s.cryptoRepo.GetAll()
 }
 
-func (s *Service) Create(ctx context.Context, symbol, name string, price float64) (*domain.Crypto, error) {
+func (s *Service) Create(ctx context.Context, symbol string) (*domain.Crypto, error) {
+	name := ""
+	price := 0.0
 	return s.cryptoRepo.Create(symbol, name, price)
 }
 
@@ -45,7 +47,10 @@ func (s *Service) GetBySymbol(ctx context.Context, symbol string) (*domain.Crypt
 	return s.cryptoRepo.GetBySymbol(symbol)
 }
 
-func (s *Service) UpdateBySymbol(ctx context.Context, symbol, name string, price float64, updatedAt time.Time) (*domain.Crypto, error) {
+func (s *Service) UpdateBySymbol(ctx context.Context, symbol string) (*domain.Crypto, error) {
+	name := ""
+	price := 0.0
+	updatedAt := time.Now()
 	return s.cryptoRepo.Update(symbol, name, price, updatedAt)
 }
 

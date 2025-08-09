@@ -54,7 +54,7 @@ func (r *CryptoRepository) Create(symbol, name string, price float64) (*domain.C
 	return newCrypto, nil
 }
 
-func (r *CryptoRepository) Update(symbol string, price float64, updatedAt time.Time) (*domain.Crypto, error) {
+func (r *CryptoRepository) Update(symbol, name string, price float64, updatedAt time.Time) (*domain.Crypto, error) {
 	crypto, ok := r.dp[symbol]
 	if !ok {
 		return nil, domain.ErrNotFound
