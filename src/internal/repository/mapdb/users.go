@@ -1,4 +1,4 @@
-package mapdp
+package mapdb
 
 type UserRepository struct {
 	db map[string]string

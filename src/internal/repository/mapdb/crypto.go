@@ -1,4 +1,4 @@
-package mapdp
+package mapdb
 
 import (
 	"cryptoserver/domain"
