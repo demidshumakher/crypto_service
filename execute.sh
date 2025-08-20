@@ -9,9 +9,9 @@ elif [ -f "cryptoserver.py" ]; then
 elif [ -f "cryptoserver.js" ]; then
     echo "Запуск Node.js crypto сервера..."
     node cryptoserver.js
-elif [ -f "cryptoserver.go" ]; then
+elif [ -f "app/cryptoserver.go" ]; then
     echo "Запуск Go crypto сервера..."
-    go run cryptoserver.go
+    go run app/cryptoserver.go
 elif [ -f "cryptoserver.class" ]; then
     echo "Запуск Java crypto сервера..."
     java cryptoserver

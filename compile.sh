@@ -3,9 +3,9 @@
 if [ -f "cryptoserver.cpp" ]; then
     echo "Компиляция C++ crypto сервера..."
     g++ -o cryptoserver cryptoserver.cpp -lcurl -lpthread -std=c++11
-elif [ -f "cryptoserver.go" ]; then
+elif [ -f "app/cryptoserver.go" ]; then
     echo "Компиляция Go crypto сервера..."
-    go build -o cryptoserver cryptoserver.go
+    go build -o cryptoserver app/cryptoserver.go
 elif [ -f "cryptoserver.py" ]; then
     echo "Python не требует компиляции"
     exit 0
