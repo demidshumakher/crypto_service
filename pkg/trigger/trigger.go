@@ -85,6 +85,9 @@ func (t *Trigger) Start() {
 }
 
 func (t *Trigger) Stop() {
+	if t.cancelChan == nil {
+		return
+	}
 	select {
 	case <-t.cancelChan:
 	default:

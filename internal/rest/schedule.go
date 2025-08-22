@@ -3,6 +3,7 @@ package rest
 import (
 	"cryptoserver/domain"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -52,7 +53,6 @@ func (sh *ScheduleHandler) UpdateCfg(w http.ResponseWriter, r *http.Request) {
 		WriteError(w, err)
 		return
 	}
-
 	json.NewEncoder(w).Encode(cfg)
 }
 

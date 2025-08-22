@@ -19,6 +19,8 @@ func NewScheduleService(cr CryptoRepository, gecko *coingecko.CoinGeckoClient, t
 	}
 	ss.t = *trigger.NewTrigger(ss.updateAllCrypto, triggerCfg)
 
+	ss.t.Start()
+
 	return ss
 }
 
