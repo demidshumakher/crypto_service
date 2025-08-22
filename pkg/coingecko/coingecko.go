@@ -106,13 +106,6 @@ func (cg *CoinGeckoClient) GetDataSymbols(symbols ...string) ([]InfoResponse, er
 	defer resp.Body.Close()
 	res := &[]InfoResponse{}
 
-	// data, err := io.ReadAll(resp.Body)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// fmt.Println(string(data))
-	// err = json.Unmarshal(data, res)
 	err = json.NewDecoder(resp.Body).Decode(res)
 	if err != nil {
 		return nil, err

@@ -22,17 +22,17 @@ type CryptoHandler struct {
 	cryptoServ CryptoService
 }
 
-func NewCryptoHandler(cs CryptoService, mx *http.ServeMux) {
+func NewCryptoHandler(cs CryptoService, mx *Router) {
 	ch := &CryptoHandler{
 		cryptoServ: cs,
 	}
-	mx.HandleFunc("GET /crypto", ch.GetAllHandler)
-	mx.HandleFunc("POST /crypto", ch.AddHandler)
-	mx.HandleFunc("GET /crypto/{symbol}", ch.GetBySymbolHandler)
-	mx.HandleFunc("PUT /crypto/{symbol}/refresh", ch.UpdateHandler)
-	mx.HandleFunc("GET /crypto/{symbol}/history", ch.GetHistoryHandler)
-	mx.HandleFunc("GET /crypto/{symbol}/stats", ch.GetStatHandler)
-	mx.HandleFunc("DELETE /crypto/{symbol}", ch.DeleteHandler)
+	mx.Handle("GET /crypto", http.HandlerFunc(ch.GetAllHandler))
+	mx.Handle("POST /crypto", http.HandlerFunc(ch.AddHandler))
+	mx.Handle("GET /crypto/{symbol}", http.HandlerFunc(ch.GetBySymbolHandler))
+	mx.Handle("PUT /crypto/{symbol}/refresh", http.HandlerFunc(ch.UpdateHandler))
+	mx.Handle("GET /crypto/{symbol}/history", http.HandlerFunc(ch.GetHistoryHandler))
+	mx.Handle("GET /crypto/{symbol}/stats", http.HandlerFunc(ch.GetStatHandler))
+	mx.Handle("DELETE /crypto/{symbol}", http.HandlerFunc(ch.DeleteHandler))
 }
 
 type cryptoResponse struct {

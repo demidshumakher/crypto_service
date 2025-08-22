@@ -19,13 +19,13 @@ type TokenResponse struct {
 	Token string `json:"token"`
 }
 
-func NewUserHandler(us UserService, mx *http.ServeMux) {
+func NewUserHandler(us UserService, mx *Router) {
 	uh := &UserHandler{
 		us: us,
 	}
 
-	mx.HandleFunc("POST /auth/register", uh.Register)
-	mx.HandleFunc("POST /auth/login", uh.Login)
+	mx.Handle("POST /auth/register", http.HandlerFunc(uh.Register))
+	mx.Handle("POST /auth/login", http.HandlerFunc(uh.Login))
 }
 
 func (uh *UserHandler) Register(w http.ResponseWriter, r *http.Request) {

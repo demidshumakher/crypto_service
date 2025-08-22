@@ -28,3 +28,32 @@ func _writeError(w http.ResponseWriter, msg string, statusCode int) {
 	w.WriteHeader(statusCode)
 	json.NewEncoder(w).Encode(es)
 }
+
+type Middleware func(http.Handler) http.Handler
+
+type Router struct {
+	mx *http.ServeMux
+	md []Middleware
+}
+
+func NewRouter(mx *http.ServeMux) *Router {
+	return &Router{
+		mx: mx,
+		md: []Middleware{},
+	}
+}
+
+func (r *Router) ApplyMiddleware(mds ...Middleware) {
+	r.md = append(r.md, mds...)
+}
+
+func (r *Router) Handle(pattern string, fn http.Handler) {
+	for _, middleware := range r.md {
+		fn = middleware(fn)
+	}
+	r.mx.Handle(pattern, fn)
+}
+
+func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	r.mx.ServeHTTP(w, req)
+}
