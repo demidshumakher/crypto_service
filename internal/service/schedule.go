@@ -30,7 +30,7 @@ func (ss *ScheduleService) GetCfg() domain.ScheduleCfg {
 
 func (ss *ScheduleService) UpdateCfg(enabled bool, intervalSeconds int) error {
 	if intervalSeconds < 10 || intervalSeconds > 3600 {
-		return domain.ErrBadRequest
+		return domain.ErrInvalidInterval
 	}
 
 	ss.t.Update(trigger.TriggerCfg{

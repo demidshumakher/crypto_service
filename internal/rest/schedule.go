@@ -3,7 +3,6 @@ package rest
 import (
 	"cryptoserver/domain"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 )

@@ -84,10 +84,12 @@ func (c *CryptoHandler) AddHandler(w http.ResponseWriter, r *http.Request) {
 func (c *CryptoHandler) GetBySymbolHandler(w http.ResponseWriter, r *http.Request) {
 	symbol := r.PathValue("symbol")
 	value, err := c.cryptoServ.GetBySymbol(r.Context(), symbol)
+
 	if err != nil {
 		WriteError(w, err)
 		return
 	}
+
 	json.NewEncoder(w).Encode(value)
 }
 

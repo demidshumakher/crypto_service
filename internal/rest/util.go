@@ -14,10 +14,12 @@ func WriteError(w http.ResponseWriter, err error) {
 	switch err {
 	case domain.ErrNotFound:
 		_writeError(w, err.Error(), http.StatusNotFound)
-	case domain.ErrInvalidToken:
+	case domain.ErrInvalidToken, domain.ErrIncorrectPassword:
+		_writeError(w, err.Error(), 401)
+	case domain.ErrAlreadyExist, domain.ErrUserAlreadyExist:
+		_writeError(w, err.Error(), 409)
+	case domain.ErrInvalidInterval:
 		_writeError(w, err.Error(), 400)
-	case domain.ErrAlreadyExist:
-		_writeError(w, err.Error(), http.StatusBadRequest)
 	default:
 		_writeError(w, err.Error(), http.StatusInternalServerError)
 	}

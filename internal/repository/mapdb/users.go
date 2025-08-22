@@ -24,7 +24,7 @@ func (ur *UserRepository) Login(user *domain.User) (string, error) {
 		return user.Username, nil
 	}
 
-	return "", domain.ErrUserNotFound
+	return "", domain.ErrIncorrectPassword
 }
 
 func (ur *UserRepository) Register(user *domain.User) (string, error) {
