@@ -44,7 +44,8 @@ func (s *Service) Create(ctx context.Context, symbol string) (*domain.Crypto, er
 }
 
 func (s *Service) GetBySymbol(ctx context.Context, symbol string) (*domain.Crypto, error) {
-	return s.cryptoRepo.GetBySymbol(symbol)
+	res, err := s.cryptoRepo.GetBySymbol(symbol)
+	return res, err
 }
 
 func (s *Service) UpdateBySymbol(ctx context.Context, symbol string) (*domain.Crypto, error) {

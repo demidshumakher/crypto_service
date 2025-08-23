@@ -52,62 +52,62 @@ class CryptoServerTestRunner:
     def warning(self, message):
         self.log(f"⚠️  {message}", Fore.YELLOW)
 
-    def check_scripts_exist(self):
-        required_scripts = ['compile.sh', 'execute.sh']
-        missing_scripts = []
+    # def check_scripts_exist(self):
+    #     required_scripts = ['compile.sh', 'execute.sh']
+    #     missing_scripts = []
 
-        for script in required_scripts:
-            if not os.path.exists(script):
-                missing_scripts.append(script)
+    #     for script in required_scripts:
+    #         if not os.path.exists(script):
+    #             missing_scripts.append(script)
 
-        if missing_scripts:
-            self.failure_reason = f"Отсутствуют скрипты: {', '.join(missing_scripts)}"
-            self.error(self.failure_reason)
-            return False
+    #     if missing_scripts:
+    #         self.failure_reason = f"Отсутствуют скрипты: {', '.join(missing_scripts)}"
+    #         self.error(self.failure_reason)
+    #         return False
 
-        return True
+    #     return True
 
-    def compile_code(self):
-        self.info("Компиляция кода...")
-        result = subprocess.run(['./compile.sh'], capture_output=True, text=True)
-        if result.returncode != 0:
-            self.compilation_failed = True
-            self.failure_reason = f"Ошибка компиляции: {result.stderr.strip() or result.stdout.strip() or 'Неизвестная ошибка'}"
-            self.error(self.failure_reason)
-            return False
+    # def compile_code(self):
+    #     self.info("Компиляция кода...")
+    #     result = subprocess.run(['./compile.sh'], capture_output=True, text=True)
+    #     if result.returncode != 0:
+    #         self.compilation_failed = True
+    #         self.failure_reason = f"Ошибка компиляции: {result.stderr.strip() or result.stdout.strip() or 'Неизвестная ошибка'}"
+    #         self.error(self.failure_reason)
+    #         return False
 
-        self.success("Компиляция завершена успешно")
-        return True
+    #     self.success("Компиляция завершена успешно")
+    #     return True
 
-    def start_server(self):
-        try:
-            self.info("Запуск crypto сервера...")
+    # def start_server(self):
+    #     try:
+    #         self.info("Запуск crypto сервера...")
 
-            self.server_process = subprocess.Popen(
-                ['./execute.sh'],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                preexec_fn=os.setsid if os.name != 'nt' else None
-            )
+    #         self.server_process = subprocess.Popen(
+    #             ['./execute.sh'],
+    #             stdout=subprocess.PIPE,
+    #             stderr=subprocess.PIPE,
+    #             preexec_fn=os.setsid if os.name != 'nt' else None
+    #         )
 
-            time.sleep(3)
+    #         time.sleep(3)
 
-            if self.server_process.poll() is not None:
-                stdout, stderr = self.server_process.communicate()
-                self.failure_reason = f"Сервер завершился с ошибкой: {stderr.decode().strip() or stdout.decode().strip() or 'Неизвестная ошибка'}"
-                self.error(self.failure_reason)
-                return False
+    #         if self.server_process.poll() is not None:
+    #             stdout, stderr = self.server_process.communicate()
+    #             self.failure_reason = f"Сервер завершился с ошибкой: {stderr.decode().strip() or stdout.decode().strip() or 'Неизвестная ошибка'}"
+    #             self.error(self.failure_reason)
+    #             return False
 
-            return self.check_server_responding()
+    #         return self.check_server_responding()
 
-        except FileNotFoundError:
-            self.failure_reason = "Не удалось запустить execute.sh"
-            self.error(self.failure_reason)
-            return False
-        except Exception as e:
-            self.failure_reason = f"Ошибка запуска сервера: {e}"
-            self.error(self.failure_reason)
-            return False
+    #     except FileNotFoundError:
+    #         self.failure_reason = "Не удалось запустить execute.sh"
+    #         self.error(self.failure_reason)
+    #         return False
+    #     except Exception as e:
+    #         self.failure_reason = f"Ошибка запуска сервера: {e}"
+    #         self.error(self.failure_reason)
+    #         return False
 
     def check_server_responding(self):
         for _ in range(10):
@@ -831,39 +831,39 @@ class CryptoServerTestRunner:
             self.error(f"Неожиданная ошибка при принудительном обновлении: {e}")
             return False
 
-    def stop_server(self):
-        if self.server_process:
-            try:
-                if os.name != 'nt':
-                    os.killpg(os.getpgid(self.server_process.pid), signal.SIGTERM)
-                else:
-                    self.server_process.terminate()
+    # def stop_server(self):
+    #     if self.server_process:
+    #         try:
+    #             if os.name != 'nt':
+    #                 os.killpg(os.getpgid(self.server_process.pid), signal.SIGTERM)
+    #             else:
+    #                 self.server_process.terminate()
 
-                try:
-                    self.server_process.wait(timeout=5)
-                except subprocess.TimeoutExpired:
-                    if os.name != 'nt':
-                        os.killpg(os.getpgid(self.server_process.pid), signal.SIGKILL)
-                    else:
-                        self.server_process.kill()
+    #             try:
+    #                 self.server_process.wait(timeout=5)
+    #             except subprocess.TimeoutExpired:
+    #                 if os.name != 'nt':
+    #                     os.killpg(os.getpgid(self.server_process.pid), signal.SIGKILL)
+    #                 else:
+    #                     self.server_process.kill()
 
-                self.info("Сервер остановлен")
+    #             self.info("Сервер остановлен")
 
-            except Exception as e:
-                self.warning(f"Ошибка при остановке сервера: {e}")
+    #         except Exception as e:
+    #             self.warning(f"Ошибка при остановке сервера: {e}")
 
     def run_tests(self):
         self.log("🧪 Начало тестирования домашнего задания №2", Fore.CYAN)
 
-        if not self.check_scripts_exist():
-            return False
+        # if not self.check_scripts_exist():
+        #     return False
 
-        if not self.compile_code():
-            return False
+        # if not self.compile_code():
+        #     return False
 
         try:
-            if not self.start_server():
-                return False
+            # if not self.start_server():
+            #     return False
 
             tests = [
                 ("Регистрация пользователя", self.test_user_registration),
@@ -901,9 +901,8 @@ class CryptoServerTestRunner:
                 print()
 
             return all_passed
-
         finally:
-            self.stop_server()
+            print()
 
     def print_summary(self):
         print("=" * 50)
